@@ -58,6 +58,13 @@ def scrape_data(keyword):
         results = []
         for item in items:
             try:
+                status_elem = item.find_elements(By.CSS_SELECTOR, "span.content__body__left__item__infor__notice--be")
+                if not status_elem:  # Không tìm thấy => bỏ qua
+                    continue
+                status_text = status_elem[0].text.strip()
+                if status_text != "Chưa đóng thầu":
+                    continue  # Bỏ qua nếu không phải "Chưa đóng thầu"
+
                 title = item.find_element(By.CSS_SELECTOR, "h5.content__body__left__item__infor__contract__name").text.strip()
                 investor = item.find_element(By.XPATH, ".//h6[span and contains(text(),'Chủ đầu tư')]/span").text.strip()
                 location_text = item.find_element(By.XPATH, ".//h6[span and contains(text(),'Địa điểm')]/span").text.strip()
